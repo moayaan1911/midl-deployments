@@ -22,6 +22,5 @@ const deploy = async ({ midl }) => {
 };
 
 deploy.tags = ["main", "PriceFeed"];
-deploy.dependencies = ["BimaCore"];
 
 module.exports = deploy;

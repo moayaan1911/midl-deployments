@@ -12,7 +12,7 @@ contract MockOracle is IAggregatorV3Interface {
 
     constructor() {
         roundId = 12345;
-        answer = 60000 * 10 ** 8;
+        answer = 95000 * 10 ** 8;
         startedAt = block.timestamp;
         updatedAt = block.timestamp;
         answeredInRound = 12345;

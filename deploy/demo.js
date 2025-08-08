@@ -1,3 +1,5 @@
+const { getBalance } = require("@midl-xyz/midl-js-core");
+
 const deploy = async ({ midl }) => {
   console.log("Starting deployment process...");
 
@@ -13,6 +15,9 @@ const deploy = async ({ midl }) => {
   );
   const deployerNonce = await provider.getTransactionCount(owner);
   console.log("deployerNonce", deployerNonce);
+
+  const balance = await getBalance(config, bitcoinAccount.address);
+  console.log("balance", balance);
 
   await midl.execute();
 };

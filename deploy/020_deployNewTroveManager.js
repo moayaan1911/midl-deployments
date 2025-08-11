@@ -62,8 +62,16 @@ const deploy = async ({ midl }) => {
     signer
   );
 
-  console.log("\n________\n");
+  // const demoInitialTroveManagerCount = await midl.callContract(
+  //   "Factory",
+  //   "troveManagerCount",
+  //   {
+  //     args: [],
+  //   }
+  // );
+  // console.log("demoInitialTroveManagerCount:", demoInitialTroveManagerCount);
 
+  console.log("\n________\n");
   const initialTroveManagerCount = await factory.troveManagerCount();
   console.log("troveManagerCount before:", initialTroveManagerCount.toString());
 

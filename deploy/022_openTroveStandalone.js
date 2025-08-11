@@ -1,13 +1,18 @@
-const deploy = async ({ midl }) => {
-  console.log("Starting Open Trove operation...");
+const hre = require("hardhat");
 
-  const amountInWei = BigInt(Math.floor(2 * 1e18));
+async function main() {
+  const { midl, ethers } = hre;
+
+  console.log("Starting Open Trove (standalone)...");
+
+  const amountInWei = 2n * 10n ** 18n;
   const percentage = 200;
   const lstPrice = 95000;
   const normalizedPrice = Number(lstPrice);
   const percentageAmount =
-    BigInt(Number(amountInWei) * normalizedPrice * 100) / BigInt(percentage) -
-    BigInt(Math.floor(200 * 1e18));
+    (BigInt(Number(amountInWei)) * BigInt(normalizedPrice) * 100n) /
+      BigInt(percentage) -
+    200n * 10n ** 18n;
 
   console.log("amountInWei:", amountInWei.toString());
   console.log("percentage:", percentage);
@@ -16,32 +21,23 @@ const deploy = async ({ midl }) => {
   console.log("percentageAmount:", percentageAmount.toString());
 
   await midl.initialize();
-  const bitcoinAccount = midl.getConfig().getState()?.accounts?.[0];
-  console.log("bitcoinAccount", bitcoinAccount);
+
   const owner = midl.getEVMAddress();
-  const provider = new hre.ethers.JsonRpcProvider(
-    "https://rpc.regtest.midl.xyz"
-  );
-  const deployerNonce = await provider.getTransactionCount(owner);
-
   console.log("owner", owner);
-  console.log("deployerNonce", deployerNonce);
 
-  // Get previously deployed contract addresses (bmBtc is same as StakedBTC)
+  const network = await ethers.provider.getNetwork();
+  console.log("chainId", Number(network.chainId));
+
+  // Get required deployments
   const borrowerOperationsAddress = (
     await midl.getDeployment("BorrowerOperations")
   ).address;
-  const bmBTCAddress = (await midl.getDeployment("StakedBTC")).address; // bmBTC is same as StakedBTC
-  const borrowerAddress = owner;
-
-  // Get TroveManager address from Factory
+  const bmBTCAddress = (await midl.getDeployment("StakedBTC")).address;
   const factoryAddress = (await midl.getDeployment("Factory")).address;
-  const signer = await hre.ethers.getSigner(owner);
-  const factory = await hre.ethers.getContractAt(
-    "Factory",
-    factoryAddress,
-    signer
-  );
+
+  // Resolve latest TroveManager via Factory
+  const signer = await ethers.getSigner(owner);
+  const factory = await ethers.getContractAt("Factory", factoryAddress, signer);
   const troveManagerCount = await factory.troveManagerCount();
   const troveManagerAddress = await factory.troveManagers(
     BigInt(String(Number(troveManagerCount) - 1))
@@ -52,7 +48,7 @@ const deploy = async ({ midl }) => {
   await midl.callContract("StakedBTC", "approve", {
     args: [borrowerOperationsAddress, amountInWei],
     to: bmBTCAddress,
-    gas: 10000000n,
+    gas: 10_000_000n,
   });
   console.log("bmBTC Approved");
 
@@ -61,23 +57,24 @@ const deploy = async ({ midl }) => {
   await midl.callContract("BorrowerOperations", "openTrove", {
     args: [
       troveManagerAddress,
-      borrowerAddress,
-      BigInt(Math.floor(1 * 1e18)), // maxFeePercentage
+      owner,
+      1n * 10n ** 18n, // maxFeePercentage
       amountInWei, // Collateral amount
       percentageAmount, // Debt amount
       "0x0000000000000000000000000000000000000000", // upperHint
       "0x0000000000000000000000000000000000000000", // lowerHint
     ],
     to: borrowerOperationsAddress,
-    gas: 10000000n,
+    gas: 10_000_000n,
   });
   console.log("Open Position Queued");
 
   console.log("Executing transaction...");
   await midl.execute({ skipEstimateGasMulti: true });
   console.log("Transaction executed successfully");
-};
+}
 
-deploy.tags = ["main", "openTrove"];
-
-module.exports = deploy;
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

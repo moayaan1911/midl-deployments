@@ -43,3 +43,19 @@ TroveManagerGetters: `0x0EcFB4F9c95b2FbDB1C879C8E08d6bA23F77ba4F`
 StakedBTC: `0x88c58787b669DD88D2285a206Bd0FB065621023f`
 
 MockOracle: `0xE84c73F664F719986CE026F74aE8D098CBa938a3`
+
+New TroveManager Address: `0x1b0699adD8E8f515d9705d16A3d5c58242B84f92`
+
+TEST TRANSACTIONS HASHES:
+
+`Transaction sent 0x1aef4085c223a9986e5d96cfd4e2a23125bf251795f82196a247b08160c3c100`
+
+`Transaction sent 0x522164126d371240f1ec4a18d76816659a7bc7b55dc5810b2cea3f67ba62a0b4`
+
+`BTC transaction sent 1d97ea6b6bb1df208b965637a8681696083fa2c1540cdad66658a5985332c815`
+
+`Transaction confirmed 1d97ea6b6bb1df208b965637a8681696083fa2c1540cdad66658a5985332c815`
+
+<div align="center">
+  <img src="./test.png" alt="Test run screenshot" width="400" />
+</div>

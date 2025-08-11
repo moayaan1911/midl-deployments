@@ -57,5 +57,5 @@ TEST TRANSACTIONS HASHES:
 `Transaction confirmed 1d97ea6b6bb1df208b965637a8681696083fa2c1540cdad66658a5985332c815`
 
 <div align="center">
-  <img src="./test.png" alt="Test run screenshot" width="400" />
+  <img src="./test.png" alt="Test run screenshot" width="800" />
 </div>

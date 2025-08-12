@@ -22,6 +22,6 @@ const deploy = async ({ midl }) => {
   await midl.execute();
 };
 
-deploy.tags = ["Demo"];
+deploy.tags = ["Demoooo"];
 
 module.exports = deploy;

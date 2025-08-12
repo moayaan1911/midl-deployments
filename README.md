@@ -1,6 +1,7 @@
 # Midl Testnet Address
 
 (Deployment script npx hardhat deploy --tags Demo )
+pnpm hardhat run deploy/022_openTroveStandalone.js --network default
 
 ---
 
@@ -58,4 +59,11 @@ TEST TRANSACTIONS HASHES:
 
 <div align="center">
   <img src="./test.png" alt="Test run screenshot" width="800" />
+</div>
+
+<p align="center"><strong>TESTED WITH NEW ADDRESS TO OPEN TROVE, still working fine</strong></p>
+
+<div align="center">
+  <img src="./test2.png" alt="Test run screenshot 2" width="800" />
+  
 </div>
